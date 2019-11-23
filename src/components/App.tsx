@@ -10,7 +10,7 @@ const App: React.FC = () => {
   return (
     <Router>
       <div>
-        <Navbar />
+        <Route component={Navbar} />
         <Switch>
           <Route path='/' exact component={Home} />
           <Route path='/teams' component={Teams} />

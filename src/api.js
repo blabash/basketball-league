@@ -14,7 +14,14 @@ export function getPlayers(teamId) {
     if (cachedPlayers === null) {
       cachedPlayers = players;
       return setTimeout(
-        () => res(teamId ? teams[teamId].players : cachedPlayers),
+        () =>
+          res(
+            teamId
+              ? teams[teamId]
+                ? teams[teamId].players
+                : []
+              : cachedPlayers
+          ),
         800
       );
     }

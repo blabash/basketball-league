@@ -9,6 +9,7 @@
     "@types/react-bootstrap": "^0.32.20",
     "@types/react-dom": "16.9.2",
     "@types/react-router-dom": "^5.1.0",
+    "@types/slug": "^0.9.1",
     "bootstrap": "^4.3.1",
     "query-string": "^6.8.3",
     "react": "^16.11.0",

@@ -1,12 +1,26 @@
 import React from 'react';
 import { Nav } from 'react-bootstrap';
+import { RouteComponentProps } from 'react-router-dom';
 
-interface Props {}
+// interface MyProps {
+//   cat?: string;
+// }
 
-const Navbar: React.FC<Props> = () => {
+// type NavBarProps = MyProps & RouteComponentProps;
+// type WeirdCat<T> = { cat: number; dog: T };
+// let myCat: WeirdCat<string>;
+
+const Navbar: React.FC<RouteComponentProps> = ({ location }) => {
+  let sliceIdx;
+  location.pathname.split('').forEach((char, idx) => {
+    if (idx === 0) return;
+    if (char === '/') sliceIdx = idx;
+  });
+
+  const baseLocation = location.pathname.slice(0, sliceIdx);
   return (
     <Nav
-      activeKey={window.location.pathname}
+      activeKey={baseLocation}
       className='justify-content-center pt-1'
       variant='tabs'
     >

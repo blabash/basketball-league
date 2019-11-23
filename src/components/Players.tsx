@@ -1,17 +1,158 @@
 import React from 'react';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import {
+  Route,
+  Link,
+  RouteComponentProps,
+  useLocation
+} from 'react-router-dom';
+import { getPlayers } from '../api';
+import { parse } from 'query-string';
+import Sidebar from './Sidebar';
+import slug from 'slug';
 
-interface Props {}
+interface Player {
+  name: string;
+  position: string;
+  teamId: string;
+  number: number;
+  avatar: string;
+  rpg: number;
+  spg: number;
+  apg: number;
+  ppg: number;
+}
 
-const Players: React.FC<Props> = () => {
+type PlayerArray = Player[];
+
+const Players: React.FC<RouteComponentProps> = ({ match }) => {
+  const location = useLocation();
+  const initialPlayers: PlayerArray = [];
+  const [players, setPlayers] = React.useState(initialPlayers);
+  const [loading, setLoading] = React.useState(true);
+
+  const fetchPlayers = (teamId?: string) => {
+    getPlayers(teamId).then((players: PlayerArray) => {
+      setPlayers(players);
+      setLoading(false);
+    });
+  };
+
+  React.useEffect(() => {
+    let teamId;
+    if (location.search) {
+      teamId = parse(location.search).teamId as string;
+    }
+    teamId ? fetchPlayers(teamId) : fetchPlayers();
+  }, [location.search]);
+
   return (
-    <Container>
-      <Row>
-        <Col>Players</Col>
-      </Row>
-    </Container>
+    <div style={{ display: 'flex' }}>
+      <Sidebar
+        loading={loading}
+        title='Players'
+        list={players.map((player: Player) => player.name)}
+      />
+
+      {loading === false && location.pathname === '/players' ? (
+        <div
+          style={{
+            flex: 2,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          Select a Player
+        </div>
+      ) : null}
+
+      <Route
+        path={`${match.url}/:playerId`}
+        render={({ match }) => {
+          if (loading === true) return null;
+
+          const player = players.find(
+            player => slug(player.name) === match.params.playerId
+          );
+
+          if (player) {
+            const {
+              name,
+              position,
+              teamId,
+              number,
+              avatar,
+              rpg,
+              spg,
+              apg,
+              ppg
+            } = player;
+
+            return (
+              <div
+                style={{
+                  flex: 5,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}
+              >
+                <img
+                  src={`${avatar}`}
+                  alt={`${name}'s avatar`}
+                  style={{ height: 300, width: 300, borderRadius: '50%' }}
+                />
+                <h1>{name}</h1>
+                <br />
+                <h3>#{number}</h3>
+                <br />
+                <div
+                  style={{
+                    width: '50%',
+                    height: '300px',
+                    fontSize: '24px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexWrap: 'wrap',
+                    alignContent: 'space-evenly',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <h2>
+                    Team
+                    <div>
+                      <Link to={`/${teamId}`} style={{ color: 'gray' }}>
+                        <h3 style={{ textTransform: 'capitalize' }}>
+                          {teamId}
+                        </h3>
+                      </Link>
+                    </div>
+                  </h2>
+                  <h2>
+                    Position
+                    <div style={{ fontWeight: 'lighter' }}>{position}</div>
+                  </h2>
+                  <h2>
+                    PPG<div>{ppg}</div>
+                  </h2>
+                  <h2>
+                    APG<div>{apg}</div>
+                  </h2>
+                  <h2>
+                    SPG<div>{spg}</div>
+                  </h2>
+                  <h2>
+                    RPG<div>{rpg}</div>
+                  </h2>
+                </div>
+              </div>
+            );
+          } else {
+            return null;
+          }
+        }}
+      />
+    </div>
   );
 };
 
