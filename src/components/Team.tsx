@@ -13,7 +13,7 @@ interface Player {
   ppg: number;
 }
 
-interface Team {
+interface TeamData {
   id: string;
   name: string;
   wins: number;
@@ -21,19 +21,19 @@ interface Team {
   established: number;
   coach: string;
   manager: string;
-  championships: number;
+  championships: number[];
   players: Player[];
 }
 
 interface Props {
-  id: string;
-  children(team: Team | null): ReactElement;
+  id: string | undefined;
+  children(team: TeamData | null): ReactElement;
 }
 
-export const Team: React.FC<Props> = props => {
+const Team: React.FC<Props> = props => {
   const [team, setTeam] = React.useState(null);
 
-  const fetchTeam = (id: string) => {
+  const fetchTeam = (id: string | undefined) => {
     setTeam(null);
 
     getTeam(id).then(team => setTeam(team));
@@ -45,3 +45,5 @@ export const Team: React.FC<Props> = props => {
 
   return props.children(team);
 };
+
+export default Team;

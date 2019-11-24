@@ -10,7 +10,7 @@ const logos = {
 }
 
 TeamLogo.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
 }
 
 TeamLogo.defaultProps = {

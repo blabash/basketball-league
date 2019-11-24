@@ -56,7 +56,7 @@ const Players: React.FC<RouteComponentProps> = ({ match }) => {
       {loading === false && location.pathname === '/players' ? (
         <div
           style={{
-            flex: 2,
+            flex: 5,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'

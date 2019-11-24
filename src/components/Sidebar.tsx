@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, Route } from 'react-router-dom';
-import { useLocation, useRouteMatch, useParams } from 'react-router';
+import { useLocation, useRouteMatch } from 'react-router';
 import slug from 'slug';
 
 interface CustomLinkProps {

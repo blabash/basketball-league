@@ -3,7 +3,7 @@ import Sidebar from './Sidebar';
 import { getTeamNames } from '../api';
 import { RouteComponentProps, Route, Link } from 'react-router-dom';
 import TeamLogo from './TeamLogo';
-import { Team } from './Team';
+import Team from './Team';
 
 interface Props {}
 
@@ -19,7 +19,7 @@ interface Player {
   ppg: number;
 }
 
-interface Team {
+interface TeamData {
   id: string;
   name: string;
   wins: number;
@@ -27,7 +27,7 @@ interface Team {
   established: number;
   coach: string;
   manager: string;
-  championships: number;
+  championships: number[];
   players: Player[];
 }
 
@@ -51,7 +51,7 @@ const Teams: React.FC<RouteComponentProps> = ({ location, match }) => {
       {loading === false && location.pathname === '/teams' ? (
         <div
           style={{
-            flex: 2,
+            flex: 6,
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center'
@@ -64,14 +64,48 @@ const Teams: React.FC<RouteComponentProps> = ({ location, match }) => {
       <Route
         path={`${match.url}/:teamId`}
         render={({ match }) => (
-          <div style={{ flex: 1 }}>
+          <div
+            style={{
+              flex: 6,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '70vh'
+            }}
+          >
             <Team id={match.params.teamId}>
-              {(team: Team) =>
+              {(team: TeamData) =>
                 team === null ? (
                   <h1>Loading...</h1>
                 ) : (
-                  <div>
+                  <div style={{ textAlign: 'center' }}>
                     <TeamLogo id={team.id} />
+                    <h1>{team.name}</h1>
+                    <ul style={{ listStyle: 'none', paddingInlineStart: 0 }}>
+                      <li>
+                        <b>Established</b>
+                        <div>{team.established}</div>
+                      </li>
+                      <li>
+                        <b>Manager</b>
+                        <div>{team.manager}</div>
+                      </li>
+                      <li>
+                        <b>Coach</b>
+                        <div>{team.coach}</div>
+                      </li>
+                    </ul>
+                    <Link
+                      style={{
+                        padding: '10px 20px',
+                        border: '2px solid black',
+                        borderRadius: '5px'
+                      }}
+                      to={`/${match.params.teamId}`}
+                    >
+                      {team.name} Team Page
+                    </Link>
                   </div>
                 )
               }

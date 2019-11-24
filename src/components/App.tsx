@@ -5,6 +5,7 @@ import Home from './Home';
 import Players from './Players';
 import Teams from './Teams';
 import Navbar from './Navbar';
+import TeamPage from './TeamPage';
 
 const App: React.FC = () => {
   return (
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <Route path='/' exact component={Home} />
           <Route path='/teams' component={Teams} />
           <Route path='/players' component={Players} />
+          <Route path='/:teamId' component={TeamPage} />
           <Route render={() => <h1 className='text-center pt-4'>404.</h1>} />
         </Switch>
       </div>
