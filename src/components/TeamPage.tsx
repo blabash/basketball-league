@@ -19,30 +19,44 @@ const TeamPage: React.FC<Props> = props => {
   const match = useRouteMatch();
   const [articles, setArticles] = React.useState<TeamsArticle[] | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
-  const [teamNames, setTeamNames] = React.useState<string[] | null>(null);
+  const [isRealTeamName, setIsRealTeamName] = React.useState(true);
+
+  console.log(teamId);
 
   React.useEffect(() => {
-    getTeamsArticles(teamId).then(articles => {
-      setLoading(false);
-      setArticles(articles);
-    });
+    if (isRealTeamName) {
+      Promise.all([getTeamNames(), getTeamsArticles(teamId)]).then(
+        ([teamNames, teamArticles]) => {
+          if (!teamNames.includes(teamId)) {
+            setIsRealTeamName(false);
+          }
+          setLoading(false);
+          setArticles(teamArticles);
+        }
+      );
+    }
 
     return () => setLoading(true);
-  }, [teamId]);
+  }, [teamId, isRealTeamName]);
 
-  React.useEffect(() => {
-    getTeamNames().then(teamNames => setTeamNames(teamNames));
-  }, []);
+  if (!isRealTeamName) {
+    return <Redirect to='/' />;
+  }
 
   if (loading === true) {
-    return <h1>Loading...</h1>;
-  } else if (
-    loading === false &&
-    teamNames &&
-    teamId &&
-    teamNames.includes(teamId) === false
-  ) {
-    return <Redirect to='/' />;
+    return (
+      <div
+        style={{
+          minHeight: '70vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        <h1>Loading...</h1>
+      </div>
+    );
   } else {
     return (
       <div

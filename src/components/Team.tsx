@@ -33,14 +33,10 @@ interface Props {
 const Team: React.FC<Props> = props => {
   const [team, setTeam] = React.useState(null);
 
-  const fetchTeam = (id: string | undefined) => {
-    setTeam(null);
-
-    getTeam(id).then(team => setTeam(team));
-  };
-
   React.useEffect(() => {
-    fetchTeam(props.id);
+    getTeam(props.id).then(team => setTeam(team));
+
+    return () => setTeam(null);
   }, [props.id]);
 
   return props.children(team);
