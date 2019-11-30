@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  Route,
-  Link,
-  RouteComponentProps,
-  useLocation
-} from 'react-router-dom';
+import { Route, Link, RouteComponentProps } from 'react-router-dom';
 import { getPlayers } from '../api';
 import { parse } from 'query-string';
 import Sidebar from './Sidebar';
@@ -24,8 +19,11 @@ interface Player {
 
 type PlayerArray = Player[];
 
-const Players: React.FC<RouteComponentProps> = ({ match }) => {
-  const location = useLocation();
+const Players: React.FC<RouteComponentProps> = ({
+  match,
+  location,
+  history
+}) => {
   const initialPlayers: PlayerArray = [];
   const [players, setPlayers] = React.useState(initialPlayers);
   const [loading, setLoading] = React.useState(true);
@@ -51,6 +49,9 @@ const Players: React.FC<RouteComponentProps> = ({ match }) => {
         loading={loading}
         title='Players'
         list={players.map((player: Player) => player.name)}
+        match={match}
+        location={location}
+        history={history}
       />
 
       {loading === false && location.pathname === '/players' ? (

@@ -2,14 +2,6 @@ import React from 'react';
 import { Nav } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router-dom';
 
-// interface MyProps {
-//   cat?: string;
-// }
-
-// type NavBarProps = MyProps & RouteComponentProps;
-// type WeirdCat<T> = { cat: number; dog: T };
-// let myCat: WeirdCat<string>;
-
 const Navbar: React.FC<RouteComponentProps> = ({ location }) => {
   let sliceIdx;
   location.pathname.split('').forEach((char, idx) => {

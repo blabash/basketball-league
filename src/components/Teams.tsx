@@ -33,7 +33,7 @@ interface TeamData {
 
 type TeamNameArray = string[];
 
-const Teams: React.FC<RouteComponentProps> = ({ location, match }) => {
+const Teams: React.FC<RouteComponentProps> = ({ location, match, history }) => {
   const [teamNames, setTeamNames] = React.useState<TeamNameArray>([]);
   const [loading, setLoading] = React.useState(true);
 
@@ -46,7 +46,14 @@ const Teams: React.FC<RouteComponentProps> = ({ location, match }) => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar loading={loading} title='Teams' list={teamNames} />
+      <Sidebar
+        loading={loading}
+        title='Teams'
+        list={teamNames}
+        match={match}
+        history={history}
+        location={location}
+      />
 
       {loading === false && location.pathname === '/teams' ? (
         <div

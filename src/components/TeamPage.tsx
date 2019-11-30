@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, useRouteMatch } from 'react-router';
+import { useParams, RouteComponentProps } from 'react-router';
 import { getTeamsArticles, getTeamNames } from '../api';
 import TeamLogo from './TeamLogo';
 import Team from './Team';
@@ -14,14 +14,11 @@ interface TeamsArticle {
 
 interface Props {}
 
-const TeamPage: React.FC<Props> = props => {
+const TeamPage: React.FC<RouteComponentProps> = ({ match }) => {
   const { teamId } = useParams();
-  const match = useRouteMatch();
   const [articles, setArticles] = React.useState<TeamsArticle[] | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const [isRealTeamName, setIsRealTeamName] = React.useState(true);
-
-  console.log(teamId);
 
   React.useEffect(() => {
     if (isRealTeamName) {
@@ -118,10 +115,7 @@ const TeamPage: React.FC<Props> = props => {
                       return (
                         <li key={article.id}>
                           <Link
-                            to={`${match && match.url}/articles/${slug(
-                              //&& issue cropping up again, am I supposed to use useRouteMatch()?
-                              article.title
-                            )}`}
+                            to={`${match.url}/articles/${slug(article.title)}`}
                           >
                             <h4>{article.title}</h4>
                             <div>{article.date.toLocaleDateString()}</div>
