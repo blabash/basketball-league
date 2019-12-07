@@ -3,6 +3,7 @@ import { useParams, RouteComponentProps } from 'react-router';
 import { getTeamsArticles, getTeamNames } from '../api';
 import TeamLogo from './TeamLogo';
 import Team from './Team';
+import Loading from './Loading';
 import slug from 'slug';
 import { Link, Redirect } from 'react-router-dom';
 
@@ -51,7 +52,7 @@ const TeamPage: React.FC<RouteComponentProps> = ({ match }) => {
           alignItems: 'center'
         }}
       >
-        <h1>Loading...</h1>
+        <Loading />
       </div>
     );
   } else {
@@ -68,7 +69,7 @@ const TeamPage: React.FC<RouteComponentProps> = ({ match }) => {
         <Team id={teamId}>
           {team =>
             team === null ? (
-              <h1>Loading...</h1>
+              <Loading />
             ) : (
               <React.Fragment>
                 <TeamLogo id={teamId} />

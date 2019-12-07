@@ -2,6 +2,7 @@ import React from 'react';
 import Sidebar from './Sidebar';
 import { getTeamNames } from '../api';
 import { RouteComponentProps, Route, Link } from 'react-router-dom';
+import Loading from './Loading';
 import TeamLogo from './TeamLogo';
 import Team from './Team';
 
@@ -84,7 +85,7 @@ const Teams: React.FC<RouteComponentProps> = ({ location, match, history }) => {
             <Team id={match.params.teamId}>
               {(team: TeamData) =>
                 team === null ? (
-                  <h1>Loading...</h1>
+                  <Loading />
                 ) : (
                   <div style={{ textAlign: 'center' }}>
                     <TeamLogo id={team.id} />

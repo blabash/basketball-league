@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, Route, RouteComponentProps } from 'react-router-dom';
 import { useLocation } from 'react-router';
+import Loading from './Loading';
 import slug from 'slug';
 
 interface CustomLinkProps {
@@ -40,7 +41,7 @@ const Sidebar: React.FC<SideBarProps & RouteComponentProps> = ({
   const location = useLocation();
   console.log('match', match);
 
-  if (loading) return <h2>Loading...</h2>;
+  if (loading) return <Loading />;
   return (
     <div style={{ flex: 1 }}>
       <h3>{title}</h3>

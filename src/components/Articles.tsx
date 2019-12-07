@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { getTeamsArticles } from '../api';
 import Sidebar from './Sidebar';
 import Article from './Article';
+import Loading from './Loading';
 
 interface Props {}
 
@@ -31,7 +32,7 @@ const Articles: React.FC<RouteComponentProps> = ({
     });
   }, [params.teamId]);
 
-  if (loading === true) return <h1>Loading...</h1>;
+  if (loading === true) return <Loading />;
 
   return (
     <div style={{ display: 'flex' }}>
@@ -51,7 +52,7 @@ const Articles: React.FC<RouteComponentProps> = ({
             <Article articleId={match.params.articleId} teamId={params.teamId}>
               {article =>
                 !article ? (
-                  <h1>Loading...</h1>
+                  <Loading />
                 ) : (
                   <div>
                     <article className='article' key={article.id}>
