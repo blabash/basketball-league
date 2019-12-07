@@ -1,11 +1,13 @@
 import React from 'react';
 import { useParams, RouteComponentProps } from 'react-router';
+import { Route } from 'react-router-dom';
 import { getTeamsArticles } from '../api';
 import Sidebar from './Sidebar';
+import Article from './Article';
 
 interface Props {}
 
-interface Article {
+interface ArticleData {
   date: Date;
   title: string;
   id: string;
@@ -19,19 +21,20 @@ const Articles: React.FC<RouteComponentProps> = ({
   const [loading, setLoading] = React.useState(true);
   const [teamArticles, setTeamArticles] = React.useState([]);
   const params = useParams<{ teamId: string }>();
-  // console.log(match);
 
   React.useEffect(() => {
     getTeamsArticles(params.teamId).then(teamArticles => {
       setLoading(false);
-      setTeamArticles(teamArticles.map((article: Article) => article.title));
+      setTeamArticles(
+        teamArticles.map((article: ArticleData) => article.title)
+      );
     });
   }, [params.teamId]);
 
   if (loading === true) return <h1>Loading...</h1>;
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <Sidebar
         loading={loading}
         title='Articles'
@@ -39,6 +42,28 @@ const Articles: React.FC<RouteComponentProps> = ({
         match={match}
         location={location}
         history={history}
+      />
+
+      <Route
+        path={`${match.url}/:articleId`}
+        render={({ match }) => (
+          <div style={{ flex: 2, padding: '10px', textAlign: 'center' }}>
+            <Article articleId={match.params.articleId} teamId={params.teamId}>
+              {article =>
+                !article ? (
+                  <h1>Loading...</h1>
+                ) : (
+                  <div>
+                    <article className='article' key={article.id}>
+                      <h1>{article.title}</h1>
+                      <p>{article.body}</p>
+                    </article>
+                  </div>
+                )
+              }
+            </Article>
+          </div>
+        )}
       />
     </div>
   );
