@@ -16,7 +16,7 @@ const Loading: React.FC<Props> = ({ text = 'Loading' }) => {
     }, 200);
 
     return () => window.clearInterval(id);
-  }, [text]);
+  }, [text, loadingText]);
 
   return <h1 style={{ textAlign: 'center' }}>{loadingText}</h1>;
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Route, Link, RouteComponentProps } from 'react-router-dom';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { getPlayers } from '../api';
 import { parse } from 'query-string';
 import Sidebar from './Sidebar';
@@ -90,7 +91,7 @@ const Players: React.FC<RouteComponentProps> = ({
             } = player;
 
             return (
-              <div
+              <TransitionGroup
                 style={{
                   flex: 5,
                   display: 'flex',
@@ -98,55 +99,63 @@ const Players: React.FC<RouteComponentProps> = ({
                   alignItems: 'center'
                 }}
               >
-                <img
-                  src={`${avatar}`}
-                  alt={`${name}'s avatar`}
-                  style={{ height: 300, width: 300, borderRadius: '50%' }}
-                />
-                <h1>{name}</h1>
-                <br />
-                <h3>#{number}</h3>
-                <br />
-                <div
-                  style={{
-                    width: '50%',
-                    height: '300px',
-                    fontSize: '24px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    flexWrap: 'wrap',
-                    alignContent: 'space-evenly',
-                    justifyContent: 'space-between'
-                  }}
+                <CSSTransition
+                  key={location.key}
+                  timeout={300}
+                  classNames='fade'
                 >
-                  <h2>
-                    Team
-                    <div>
-                      <Link to={`/${teamId}`} style={{ color: 'gray' }}>
-                        <h3 style={{ textTransform: 'capitalize' }}>
-                          {teamId}
-                        </h3>
-                      </Link>
+                  <div>
+                    <img
+                      src={`${avatar}`}
+                      alt={`${name}'s avatar`}
+                      style={{ height: 300, width: 300, borderRadius: '50%' }}
+                    />
+                    <h1>{name}</h1>
+                    <br />
+                    <h3>#{number}</h3>
+                    <br />
+                    <div
+                      style={{
+                        width: '50%',
+                        height: '300px',
+                        fontSize: '24px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        flexWrap: 'wrap',
+                        alignContent: 'space-evenly',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <h2>
+                        Team
+                        <div>
+                          <Link to={`/${teamId}`} style={{ color: 'gray' }}>
+                            <h3 style={{ textTransform: 'capitalize' }}>
+                              {teamId}
+                            </h3>
+                          </Link>
+                        </div>
+                      </h2>
+                      <h2>
+                        Position
+                        <div style={{ fontWeight: 'lighter' }}>{position}</div>
+                      </h2>
+                      <h2>
+                        PPG<div>{ppg}</div>
+                      </h2>
+                      <h2>
+                        APG<div>{apg}</div>
+                      </h2>
+                      <h2>
+                        SPG<div>{spg}</div>
+                      </h2>
+                      <h2>
+                        RPG<div>{rpg}</div>
+                      </h2>
                     </div>
-                  </h2>
-                  <h2>
-                    Position
-                    <div style={{ fontWeight: 'lighter' }}>{position}</div>
-                  </h2>
-                  <h2>
-                    PPG<div>{ppg}</div>
-                  </h2>
-                  <h2>
-                    APG<div>{apg}</div>
-                  </h2>
-                  <h2>
-                    SPG<div>{spg}</div>
-                  </h2>
-                  <h2>
-                    RPG<div>{rpg}</div>
-                  </h2>
-                </div>
-              </div>
+                  </div>
+                </CSSTransition>
+              </TransitionGroup>
             );
           } else {
             return null;
